@@ -818,7 +818,7 @@ func (s *Server) Serve(lis net.Listener) error {
 		// s.conns before this conn can be added.
 		s.serveWG.Add(1)
 		go func() {
-			s.handleRawConn(lis.Addr().String(), rawConn)
+			s.HandleRawConn(lis.Addr().String(), rawConn)
 			s.serveWG.Done()
 		}()
 	}
@@ -826,7 +826,7 @@ func (s *Server) Serve(lis net.Listener) error {
 
 // handleRawConn forks a goroutine to handle a just-accepted connection that
 // has not had any I/O performed on it yet.
-func (s *Server) handleRawConn(lisAddr string, rawConn net.Conn) {
+func (s *Server) HandleRawConn(lisAddr string, rawConn net.Conn) {
 	if s.quit.HasFired() {
 		rawConn.Close()
 		return
